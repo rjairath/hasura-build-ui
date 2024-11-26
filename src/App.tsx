@@ -1,13 +1,4 @@
-import {
-  Box,
-  Code,
-  Container,
-  Loader,
-  ScrollAreaAutosize,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Box, Container, Loader, Stack, Text, Title } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import { SwapiClient } from "./client";
 
