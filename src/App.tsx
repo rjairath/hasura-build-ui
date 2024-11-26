@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { SwapiClient } from "./client";
+import { Stack, Text, Title } from "@mantine/core";
 
 function App() {
   const {
@@ -17,16 +18,16 @@ function App() {
   });
 
   return (
-    <div>
+    <Stack>
       {isLoading && <p>Loading SWAPI Data...</p>}
       {isError && <p>Error fetching SWAPI Data</p>}
       {dataPadData && (
-        <div>
-          <h1>Datapad Data Loaded!</h1>
-          <p>Check the console to see your data</p>
-        </div>
+        <Stack>
+          <Title>Datapad Data Loaded!</Title>
+          <Text>Check the console to see your data</Text>
+        </Stack>
       )}
-    </div>
+    </Stack>
   );
 }
 
