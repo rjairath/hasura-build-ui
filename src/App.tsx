@@ -9,6 +9,7 @@ function App() {
   } = useQuery({
     queryKey: ["data-pad-data"],
     queryFn: async () => {
+      // data here is typed based on the SWAPI schema, so you should be able to glean the structure from the data
       const data = await SwapiClient.GetDataForDatapad();
       console.log(data);
       return data;
