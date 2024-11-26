@@ -1,6 +1,15 @@
+import {
+  Box,
+  Code,
+  Container,
+  Loader,
+  ScrollAreaAutosize,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import { SwapiClient } from "./client";
-import { Stack, Text, Title } from "@mantine/core";
 
 function App() {
   const {
@@ -18,16 +27,30 @@ function App() {
   });
 
   return (
-    <Stack>
-      {isLoading && <p>Loading SWAPI Data...</p>}
-      {isError && <p>Error fetching SWAPI Data</p>}
-      {dataPadData && (
-        <Stack>
-          <Title>Datapad Data Loaded!</Title>
-          <Text>Check the console to see your data</Text>
-        </Stack>
-      )}
-    </Stack>
+    <Container fluid>
+      {(() => {
+        if (isLoading) {
+          return <Loader />;
+        }
+
+        if (isError) {
+          return <Text>Error Fetching Datapad Data</Text>;
+        }
+
+        return (
+          <Stack>
+            <Box className="star-wars">
+              <Stack className="crawl">
+                <Title size={"xl"} fz={"500%"} order={1}>
+                  Hasura Interview Data!
+                </Title>
+                {JSON.stringify(dataPadData, null, 2)}
+              </Stack>
+            </Box>
+          </Stack>
+        );
+      })()}
+    </Container>
   );
 }
 
