@@ -1305,83 +1305,105 @@ export type VehiclesEdge = {
   node?: Maybe<Vehicle>;
 };
 
+export type PeopleFieldsFragment = { __typename?: 'Person', id: string, name?: string | null, species?: { __typename?: 'Species', id: string, name?: string | null } | null, homeworld?: { __typename?: 'Planet', id: string, name?: string | null, climates?: Array<string | null> | null, population?: number | null, terrains?: Array<string | null> | null } | null, starshipConnection?: { __typename?: 'PersonStarshipsConnection', starships?: Array<{ __typename?: 'Starship', id: string, name?: string | null, model?: string | null, manufacturers?: Array<string | null> | null, hyperdriveRating?: number | null } | null> | null } | null, filmConnection?: { __typename?: 'PersonFilmsConnection', films?: Array<{ __typename?: 'Film', id: string, title?: string | null, releaseDate?: string | null } | null> | null } | null };
+
+export type PlanetFieldsFragment = { __typename?: 'Planet', id: string, name?: string | null, population?: number | null, climates?: Array<string | null> | null, terrains?: Array<string | null> | null, residentConnection?: { __typename?: 'PlanetResidentsConnection', residents?: Array<{ __typename?: 'Person', id: string, name?: string | null, species?: { __typename?: 'Species', id: string, name?: string | null } | null } | null> | null } | null };
+
+export type StarshipFieldsFragment = { __typename?: 'Starship', id: string, name?: string | null, model?: string | null, manufacturers?: Array<string | null> | null, hyperdriveRating?: number | null, pilotConnection?: { __typename?: 'StarshipPilotsConnection', pilots?: Array<{ __typename?: 'Person', id: string, name?: string | null } | null> | null } | null };
+
 export type GetDataForDatapadQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetDataForDatapadQuery = { __typename?: 'Root', allPeople?: { __typename?: 'PeopleConnection', people?: Array<{ __typename?: 'Person', id: string, name?: string | null, species?: { __typename?: 'Species', id: string, name?: string | null } | null, homeworld?: { __typename?: 'Planet', id: string, name?: string | null, climates?: Array<string | null> | null, population?: number | null, terrains?: Array<string | null> | null } | null, starshipConnection?: { __typename?: 'PersonStarshipsConnection', starships?: Array<{ __typename?: 'Starship', id: string, name?: string | null, model?: string | null, manufacturers?: Array<string | null> | null, hyperdriveRating?: number | null } | null> | null } | null, filmConnection?: { __typename?: 'PersonFilmsConnection', films?: Array<{ __typename?: 'Film', id: string, title?: string | null, releaseDate?: string | null } | null> | null } | null } | null> | null } | null, allPlanets?: { __typename?: 'PlanetsConnection', planets?: Array<{ __typename?: 'Planet', id: string, name?: string | null, population?: number | null, climates?: Array<string | null> | null, terrains?: Array<string | null> | null, residentConnection?: { __typename?: 'PlanetResidentsConnection', residents?: Array<{ __typename?: 'Person', id: string, name?: string | null, species?: { __typename?: 'Species', id: string, name?: string | null } | null } | null> | null } | null } | null> | null } | null, allStarships?: { __typename?: 'StarshipsConnection', starships?: Array<{ __typename?: 'Starship', id: string, name?: string | null, model?: string | null, manufacturers?: Array<string | null> | null, hyperdriveRating?: number | null, pilotConnection?: { __typename?: 'StarshipPilotsConnection', pilots?: Array<{ __typename?: 'Person', id: string, name?: string | null } | null> | null } | null } | null> | null } | null };
 
-
-export const GetDataForDatapadDocument = gql`
-    query GetDataForDatapad {
-  allPeople(first: 100) {
-    people {
-      id
-      name
-      species {
-        id
-        name
-      }
-      homeworld {
-        id
-        name
-        climates
-        population
-        terrains
-      }
-      starshipConnection {
-        starships {
-          id
-          name
-          model
-          manufacturers
-          hyperdriveRating
-        }
-      }
-      filmConnection {
-        films {
-          id
-          title
-          releaseDate
-        }
-      }
-    }
+export const PeopleFieldsFragmentDoc = gql`
+    fragment PeopleFields on Person {
+  id
+  name
+  species {
+    id
+    name
   }
-  allPlanets(first: 100) {
-    planets {
-      id
-      name
-      population
-      climates
-      terrains
-      residentConnection {
-        residents {
-          id
-          name
-          species {
-            id
-            name
-          }
-        }
-      }
-    }
+  homeworld {
+    id
+    name
+    climates
+    population
+    terrains
   }
-  allStarships(first: 100) {
+  starshipConnection {
     starships {
       id
       name
       model
       manufacturers
       hyperdriveRating
-      pilotConnection {
-        pilots {
-          id
-          name
-        }
+    }
+  }
+  filmConnection {
+    films {
+      id
+      title
+      releaseDate
+    }
+  }
+}
+    `;
+export const PlanetFieldsFragmentDoc = gql`
+    fragment PlanetFields on Planet {
+  id
+  name
+  population
+  climates
+  terrains
+  residentConnection {
+    residents {
+      id
+      name
+      species {
+        id
+        name
       }
     }
   }
 }
     `;
+export const StarshipFieldsFragmentDoc = gql`
+    fragment StarshipFields on Starship {
+  id
+  name
+  model
+  manufacturers
+  hyperdriveRating
+  pilotConnection {
+    pilots {
+      id
+      name
+    }
+  }
+}
+    `;
+export const GetDataForDatapadDocument = gql`
+    query GetDataForDatapad {
+  allPeople(first: 100) {
+    people {
+      ...PeopleFields
+    }
+  }
+  allPlanets(first: 100) {
+    planets {
+      ...PlanetFields
+    }
+  }
+  allStarships(first: 100) {
+    starships {
+      ...StarshipFields
+    }
+  }
+}
+    ${PeopleFieldsFragmentDoc}
+${PlanetFieldsFragmentDoc}
+${StarshipFieldsFragmentDoc}`;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
 

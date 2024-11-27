@@ -1,46 +1,39 @@
-import { Box, Container, Loader, Stack, Text, Title } from "@mantine/core";
+import { Container, Loader, Paper, Stack, Text, Title } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
-import { SwapiClient } from "./client";
+import { CharacterSelector } from "./components/CharacterSelector";
+import { MissionSummary } from "./components/MissionSummary";
+import { PlanetSelector } from "./components/PlanetSelector";
+import { StarshipSelector } from "./components/StarshipSelector";
+import { fetchDataForDatapad } from "./data";
 
 function App() {
-  const {
-    data: dataPadData,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data, isPending, isError } = useQuery({
     queryKey: ["data-pad-data"],
-    queryFn: async () => {
-      // data here is typed based on the SWAPI schema, so you should be able to glean the structure from the data
-      const data = await SwapiClient.GetDataForDatapad();
-      console.log(data);
-      return data;
-    },
+    queryFn: () => fetchDataForDatapad(),
   });
 
+  if (isPending) {
+    return <Loader />;
+  }
+
+  if (isError) {
+    return <Text>Error Fetching Datapad Data</Text>;
+  }
+
   return (
-    <Container fluid>
-      {(() => {
-        if (isLoading) {
-          return <Loader />;
-        }
-
-        if (isError) {
-          return <Text>Error Fetching Datapad Data</Text>;
-        }
-
-        return (
+    <Container fluid maw={1200} my={"xl"}>
+      <Stack>
+        <Paper withBorder p={"xl"} component={Stack} gap={"xl"}>
+          <Title order={1}>Galactic Datapad</Title>
           <Stack>
-            <Box className="star-wars">
-              <Stack className="crawl">
-                <Title size={"xl"} fz={"500%"} order={1}>
-                  Hasura Interview Data!
-                </Title>
-                {JSON.stringify(dataPadData, null, 2)}
-              </Stack>
-            </Box>
+            {/* Feature components: */}
+            <CharacterSelector characters={data.people} />
+            <PlanetSelector planets={data.planets} />
+            <StarshipSelector starships={data.starships} />
+            <MissionSummary starship={null} planet={null} character={null} />
           </Stack>
-        );
-      })()}
+        </Paper>
+      </Stack>
     </Container>
   );
 }

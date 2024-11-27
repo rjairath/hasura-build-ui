@@ -13,6 +13,7 @@ const queryClient = new QueryClient();
 const theme = createTheme({
   /** Put your mantine theme override here */
   primaryColor: "yellow",
+  defaultRadius: "xl",
 });
 
 createRoot(document.getElementById("root")!).render(
