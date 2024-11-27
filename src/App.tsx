@@ -1,4 +1,12 @@
-import { Container, Loader, Paper, Stack, Text, Title } from "@mantine/core";
+import {
+  Alert,
+  Center,
+  Container,
+  LoadingOverlay,
+  Paper,
+  Stack,
+  Title,
+} from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import { CharacterSelector } from "./components/CharacterSelector";
 import { MissionSummary } from "./components/MissionSummary";
@@ -13,11 +21,15 @@ function App() {
   });
 
   if (isPending) {
-    return <Loader />;
+    return <LoadingOverlay visible />;
   }
 
   if (isError) {
-    return <Text>Error Fetching Datapad Data</Text>;
+    return (
+      <Center m={"xl"}>
+        <Alert color="red">⚠️ Error Fetching Datapad Data</Alert>
+      </Center>
+    );
   }
 
   return (
