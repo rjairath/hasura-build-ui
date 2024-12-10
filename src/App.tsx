@@ -12,8 +12,10 @@ import { useQuery } from "@tanstack/react-query";
 import { CharacterSelector } from "./components/CharacterSelector";
 import { MissionSummary } from "./components/MissionSummary";
 import { PlanetSelector } from "./components/PlanetSelector";
-import { StarshipSelector } from "./components/StarshipSelector";
+import StarshipSelector from "./components/StarshipSelector";
 import { fetchDataForDatapad } from "./data";
+import { useState } from "react";
+import { Character } from "./types";
 
 function App() {
   // When promise resolves, isPending = false, data = resolved value
@@ -21,6 +23,7 @@ function App() {
     queryKey: ["data-pad-data"],
     queryFn: () => fetchDataForDatapad(),
   });
+  const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
 
   if (isPending) {
     return <LoadingOverlay visible />;
@@ -41,11 +44,19 @@ function App() {
           <Title order={1}>Galactic Datapad</Title>
           <Group justify="space-between" align="flex-start" style={{ width: "100%", gap: "1rem" }}>
             {/* Feature components: */}
-            <CharacterSelector characters={data.people} />
+            <CharacterSelector 
+              characters={data.people} selectedCharacter={selectedCharacter} 
+              setSelectedCharacter={setSelectedCharacter}
+            />
             <PlanetSelector planets={data.planets} />
-            <StarshipSelector starships={data.starships} />
-            {/* <MissionSummary starship={null} planet={null} character={null} /> */}
+            <StarshipSelector 
+              pilotedStarships={selectedCharacter?.starshipConnection?.starships}
+              allStarships={data.starships}
+            />
           </Group>
+        </Paper>
+        <Paper withBorder p={"xl"} radius={"md"}>
+          <MissionSummary starship={null} planet={null} character={selectedCharacter} />
         </Paper>
       </Stack>
     </Container>

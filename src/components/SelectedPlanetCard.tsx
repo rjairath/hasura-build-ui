@@ -6,7 +6,6 @@ import {
     Center,
     Divider,
     Group,
-    List,
     Stack,
     Text,
 } from "@mantine/core";

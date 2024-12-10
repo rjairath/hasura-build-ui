@@ -5,11 +5,12 @@ import SelectedCharacterCard from './SelectedCharacterCard';
 
 type characterSelectorProps = {
   characters: Character[];
+  selectedCharacter: Character | null;
+  setSelectedCharacter: React.Dispatch<React.SetStateAction<Character | null>>
 }
 
-export const CharacterSelector: React.FC<characterSelectorProps> = ({characters}) => {
+export const CharacterSelector: React.FC<characterSelectorProps> = ({characters, selectedCharacter, setSelectedCharacter}) => {
   const [selectedStr, setSelectedStr] = useState("");
-  const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
 
   return (
     <Stack style={{ flex: 1, maxWidth: "33.33%" }}>
