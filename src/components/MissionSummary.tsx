@@ -12,7 +12,7 @@ export const MissionSummary: React.FC<MissionSummaryProps> = ({
     character,
     starship,
 }) => {
-    console.log(planet, character, starship, "checking")
+    // console.log(planet, character, starship, "checking")
     const renderStr = () => {
       if(!character || !planet || !starship) {
         return "Mission Summary"

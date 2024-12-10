@@ -11,12 +11,12 @@ import {
   Notification
 } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
-import { CharacterSelector } from "./components/CharacterSelector";
+import CharacterSelector from "./components/CharacterSelector";
 import { MissionSummary } from "./components/MissionSummary";
-import { PlanetSelector } from "./components/PlanetSelector";
+import PlanetSelector from "./components/PlanetSelector";
 import StarshipSelector from "./components/StarshipSelector";
 import { fetchDataForDatapad } from "./data";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Character, Planet, Starship } from "./types";
 
 function App() {
@@ -29,6 +29,15 @@ function App() {
   const [selectedPlanet, setSelectedPlanet] = useState<Planet | null>(null);
   const [selectedShip, setSelectedShip] = useState<Starship | null>(null);
   const [showNotification, setShowNotification] = useState(false);
+
+  const pilotedStarships = useMemo(
+      () => selectedCharacter?.starshipConnection?.starships || null,
+      [selectedCharacter],
+  );
+  const allStarships = useMemo(() => data?.starships, [data]);
+  const allCharacters = useMemo(() => data?.people, [data]);
+  const allPlanets = useMemo(() => data?.planets, [data]);
+
 
   if (isPending) {
     return <LoadingOverlay visible />;
@@ -44,10 +53,10 @@ function App() {
 
   return (
       <Container fluid maw={1200} my={"xl"}>
-          <Stack style={{position: "relative"}}>
+          <Stack style={{ position: "relative" }}>
               {showNotification && (
                   <Notification
-                      style={{ position: "absolute", right: "0"}}
+                      style={{ position: "absolute", right: "0" }}
                       radius={"md"}
                       title="Mission Alert"
                       color="blue"
@@ -69,22 +78,22 @@ function App() {
                       align="flex-start"
                       style={{ width: "100%", gap: "1rem" }}
                   >
-                      {/* Feature components: */}
+                      {/* Memoized */}
                       <CharacterSelector
-                          characters={data.people}
+                          characters={allCharacters}
                           selectedCharacter={selectedCharacter}
                           setSelectedCharacter={setSelectedCharacter}
                       />
+                      {/* Memoized */}
                       <PlanetSelector
-                          planets={data.planets}
+                          planets={allPlanets}
                           selectedPlanet={selectedPlanet}
                           setSelectedPlanet={setSelectedPlanet}
                       />
+                      {/* Memoized */}
                       <StarshipSelector
-                          pilotedStarships={
-                              selectedCharacter?.starshipConnection?.starships
-                          }
-                          allStarships={data.starships}
+                          pilotedStarships={pilotedStarships}
+                          allStarships={allStarships}
                           selectedShip={selectedShip}
                           setSelectedShip={setSelectedShip}
                       />

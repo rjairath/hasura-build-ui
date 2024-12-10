@@ -4,13 +4,15 @@ import { Character } from "../types";
 import SelectedCharacterCard from './SelectedCharacterCard';
 
 type characterSelectorProps = {
-  characters: Character[];
+  characters?: Character[];
   selectedCharacter: Character | null;
   setSelectedCharacter: React.Dispatch<React.SetStateAction<Character | null>>
 }
 
-export const CharacterSelector: React.FC<characterSelectorProps> = ({characters, selectedCharacter, setSelectedCharacter}) => {
+const CharacterSelector: React.FC<characterSelectorProps> = ({characters, selectedCharacter, setSelectedCharacter}) => {
   const [selectedStr, setSelectedStr] = useState("");
+
+  console.log("rerender character")
 
   return (
     <Stack style={{ flex: 1, maxWidth: "33.33%" }}>
@@ -20,9 +22,9 @@ export const CharacterSelector: React.FC<characterSelectorProps> = ({characters,
         placeholder="Pick a value or start typing..."
         value={selectedStr}
         onChange={(val) => setSelectedStr(val)}
-        data={characters.filter(item => item !== null && item !== undefined).map((item) => item.name!)}
+        data={characters?.filter(item => item !== null && item !== undefined).map((item) => item.name!)}
         onOptionSubmit={(item) => {
-          const selectedItem = characters.find((d) => d.name === item);
+          const selectedItem = characters?.find((d) => d.name === item);
           setSelectedCharacter(selectedItem || null);
         }}
       />
@@ -33,3 +35,5 @@ export const CharacterSelector: React.FC<characterSelectorProps> = ({characters,
     </Stack>
   );
 };
+
+export default React.memo(CharacterSelector);

@@ -1,15 +1,15 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Autocomplete, Stack } from "@mantine/core";
 import { Planet } from "../types";
 import SelectedPlanetCard from "./SelectedPlanetCard";
 
 type PlanetSelectorProps = {
-  planets: Planet[];
+  planets?: Planet[];
   selectedPlanet: Planet | null;
   setSelectedPlanet: React.Dispatch<React.SetStateAction<Planet | null>>
 }
 
-export const PlanetSelector: React.FC<PlanetSelectorProps> = ({planets, selectedPlanet, setSelectedPlanet}) => {
+const PlanetSelector: React.FC<PlanetSelectorProps> = ({planets, selectedPlanet, setSelectedPlanet}) => {
   const [selectedStr, setSelectedStr] = useState("");
 
   return (
@@ -20,9 +20,9 @@ export const PlanetSelector: React.FC<PlanetSelectorProps> = ({planets, selected
         placeholder="Pick a value or start typing..."
         value={selectedStr}
         onChange={(val) => setSelectedStr(val)}
-        data={planets.filter(item => item !== null && item !== undefined).map((item) => item.name!)}
+        data={planets?.filter(item => item !== null && item !== undefined).map((item) => item.name!)}
         onOptionSubmit={(item) => {
-          const selectedItem = planets.find((d) => d.name === item);
+          const selectedItem = planets?.find((d) => d.name === item);
           setSelectedPlanet(selectedItem || null);
         }}
       />
@@ -33,3 +33,5 @@ export const PlanetSelector: React.FC<PlanetSelectorProps> = ({planets, selected
     </Stack>
   );
 };
+
+export default React.memo(PlanetSelector);

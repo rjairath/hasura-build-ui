@@ -6,19 +6,19 @@ import { useEffect } from "react";
 
 type StarshipSelectorProps = {
     pilotedStarships: any[] | undefined | null;
-    allStarships: Starship[];
+    allStarships: Starship[] | undefined;
     selectedShip: Starship | null;
     setSelectedShip: React.Dispatch<React.SetStateAction<Starship | null>>;
 };
 
 const StarshipSelector: React.FC<StarshipSelectorProps> = ({ pilotedStarships, allStarships, selectedShip, setSelectedShip }) => {
   // Filter out pilotedShips from allStarShips
-  const [rebelStarships, setRebelStarships] = useState<Starship[] | null>(null);
+  const [rebelStarships, setRebelStarships] = useState<Starship[] | undefined | null>(null);
   const [selectedPiloted, setSelectedPiloted] = useState<string | null>(null);
   const [selectedRebel, setSelectedRebel] = useState<string | null>(null);
 
   useEffect(() => {
-    const temp = allStarships.filter(ship => !isExistsInPiloted(ship.id));
+    const temp = allStarships?.filter(ship => !isExistsInPiloted(ship.id));
     setRebelStarships(temp);
   }, [pilotedStarships]);
 
@@ -31,7 +31,6 @@ const StarshipSelector: React.FC<StarshipSelectorProps> = ({ pilotedStarships, a
   const handlePilotedChange = (value: string) => {
     setSelectedPiloted(value || null);
     const temp = allStarships?.find((d) => d.name === value);
-    // console.log(temp, "temp")
     setSelectedShip(temp!);
     if (value) {
       setSelectedRebel(null); // Clear Rebel selection if a piloted starship is chosen
@@ -48,7 +47,6 @@ const StarshipSelector: React.FC<StarshipSelectorProps> = ({ pilotedStarships, a
     }
   };
 
-  console.log(pilotedStarships, rebelStarships, "check");
   return (
     <Stack style={{ flex: 1, maxWidth: "33.33%" }}>
         {/* Piloted Starships Section */}
