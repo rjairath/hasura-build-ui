@@ -39,7 +39,7 @@ function App() {
       <Stack>
         <Paper withBorder p={"xl"} component={Stack} gap={"xl"} radius={"md"}>
           <Title order={1}>Galactic Datapad</Title>
-          <Group justify="space-between" style={{ width: "100%", gap: "1rem" }}>
+          <Group justify="space-between" align="flex-start" style={{ width: "100%", gap: "1rem" }}>
             {/* Feature components: */}
             <CharacterSelector characters={data.people} />
             <PlanetSelector planets={data.planets} />
