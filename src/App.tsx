@@ -15,7 +15,7 @@ import { PlanetSelector } from "./components/PlanetSelector";
 import StarshipSelector from "./components/StarshipSelector";
 import { fetchDataForDatapad } from "./data";
 import { useState } from "react";
-import { Character } from "./types";
+import { Character, Planet, Starship } from "./types";
 
 function App() {
   // When promise resolves, isPending = false, data = resolved value
@@ -24,6 +24,8 @@ function App() {
     queryFn: () => fetchDataForDatapad(),
   });
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
+  const [selectedPlanet, setSelectedPlanet] = useState<Planet | null>(null);
+  const [selectedShip, setSelectedShip] = useState<Starship | null>(null);
 
   if (isPending) {
     return <LoadingOverlay visible />;
@@ -48,15 +50,20 @@ function App() {
               characters={data.people} selectedCharacter={selectedCharacter} 
               setSelectedCharacter={setSelectedCharacter}
             />
-            <PlanetSelector planets={data.planets} />
+            <PlanetSelector 
+              planets={data.planets} selectedPlanet={selectedPlanet}
+              setSelectedPlanet={setSelectedPlanet}
+            />
             <StarshipSelector 
               pilotedStarships={selectedCharacter?.starshipConnection?.starships}
               allStarships={data.starships}
+              selectedShip={selectedShip}
+              setSelectedShip={setSelectedShip}
             />
           </Group>
         </Paper>
         <Paper withBorder p={"xl"} radius={"md"}>
-          <MissionSummary starship={null} planet={null} character={selectedCharacter} />
+          <MissionSummary starship={selectedShip} planet={selectedPlanet} character={selectedCharacter} />
         </Paper>
       </Stack>
     </Container>

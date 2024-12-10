@@ -5,11 +5,12 @@ import SelectedPlanetCard from "./SelectedPlanetCard";
 
 type PlanetSelectorProps = {
   planets: Planet[];
+  selectedPlanet: Planet | null;
+  setSelectedPlanet: React.Dispatch<React.SetStateAction<Planet | null>>
 }
 
-export const PlanetSelector: React.FC<PlanetSelectorProps> = ({planets}) => {
+export const PlanetSelector: React.FC<PlanetSelectorProps> = ({planets, selectedPlanet, setSelectedPlanet}) => {
   const [selectedStr, setSelectedStr] = useState("");
-  const [selectedPlanet, setSelectedPlanet] = useState<Planet | null>(null);
 
   return (
     <Stack style={{ flex: 1, maxWidth: "33.33%" }}>

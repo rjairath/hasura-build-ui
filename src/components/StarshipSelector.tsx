@@ -5,11 +5,13 @@ import { useEffect } from "react";
 
 
 type StarshipSelectorProps = {
-    pilotedStarships: any[] | undefined | null; 
+    pilotedStarships: any[] | undefined | null;
     allStarships: Starship[];
-}
+    selectedShip: Starship | null;
+    setSelectedShip: React.Dispatch<React.SetStateAction<Starship | null>>;
+};
 
-const StarshipSelector: React.FC<StarshipSelectorProps> = ({ pilotedStarships, allStarships }) => {
+const StarshipSelector: React.FC<StarshipSelectorProps> = ({ pilotedStarships, allStarships, selectedShip, setSelectedShip }) => {
   // Filter out pilotedShips from allStarShips
   const [rebelStarships, setRebelStarships] = useState<Starship[] | null>(null);
   const [selectedPiloted, setSelectedPiloted] = useState<string | null>(null);
@@ -28,6 +30,9 @@ const StarshipSelector: React.FC<StarshipSelectorProps> = ({ pilotedStarships, a
   // Handle piloted starship selection
   const handlePilotedChange = (value: string) => {
     setSelectedPiloted(value || null);
+    const temp = allStarships?.find((d) => d.name === value);
+    // console.log(temp, "temp")
+    setSelectedShip(temp!);
     if (value) {
       setSelectedRebel(null); // Clear Rebel selection if a piloted starship is chosen
     }
@@ -36,6 +41,8 @@ const StarshipSelector: React.FC<StarshipSelectorProps> = ({ pilotedStarships, a
   // Handle Rebel starship selection
   const handleRebelChange = (value: string) => {
     setSelectedRebel(value || null);
+    const temp = allStarships?.find((d) => d.name === value);
+    setSelectedShip(temp!);
     if (value) {
       setSelectedPiloted(null); // Clear Piloted selection if a Rebel starship is chosen
     }
