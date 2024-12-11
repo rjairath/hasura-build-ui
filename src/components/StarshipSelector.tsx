@@ -9,9 +9,10 @@ type StarshipSelectorProps = {
     allStarships: Starship[] | undefined;
     selectedShip: Starship | null;
     setSelectedShip: React.Dispatch<React.SetStateAction<Starship | null>>;
+    isMobile?: boolean;
 };
 
-const StarshipSelector: React.FC<StarshipSelectorProps> = ({ pilotedStarships, allStarships, selectedShip, setSelectedShip }) => {
+const StarshipSelector: React.FC<StarshipSelectorProps> = ({ pilotedStarships, allStarships, selectedShip, setSelectedShip, isMobile }) => {
   // Filter out pilotedShips from allStarShips
   const [rebelStarships, setRebelStarships] = useState<Starship[] | undefined | null>(null);
   const [selectedPiloted, setSelectedPiloted] = useState<string | null>(null);
@@ -48,7 +49,7 @@ const StarshipSelector: React.FC<StarshipSelectorProps> = ({ pilotedStarships, a
   };
 
   return (
-    <Stack style={{ flex: 1, maxWidth: "33.33%" }}>
+    <Stack style={{ flex: 1, width: isMobile ? "100%" : "33%" }}>
         {/* Piloted Starships Section */}
         <Autocomplete
           label="Pick a piloted starship"

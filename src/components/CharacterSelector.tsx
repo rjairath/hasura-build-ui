@@ -6,16 +6,17 @@ import SelectedCharacterCard from './SelectedCharacterCard';
 type characterSelectorProps = {
   characters?: Character[];
   selectedCharacter: Character | null;
-  setSelectedCharacter: React.Dispatch<React.SetStateAction<Character | null>>
+  setSelectedCharacter: React.Dispatch<React.SetStateAction<Character | null>>;
+  isMobile?: boolean;
 }
 
-const CharacterSelector: React.FC<characterSelectorProps> = ({characters, selectedCharacter, setSelectedCharacter}) => {
+const CharacterSelector: React.FC<characterSelectorProps> = ({characters, selectedCharacter, setSelectedCharacter, isMobile}) => {
   const [selectedStr, setSelectedStr] = useState("");
 
   console.log("rerender character")
 
   return (
-    <Stack style={{ flex: 1, maxWidth: "33.33%" }}>
+    <Stack style={{ flex: 1, width: isMobile ? "100%" : "33%" }}>
       <Autocomplete
         label="Pick a Character"
         radius={"md"}

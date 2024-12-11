@@ -6,14 +6,15 @@ import SelectedPlanetCard from "./SelectedPlanetCard";
 type PlanetSelectorProps = {
   planets?: Planet[];
   selectedPlanet: Planet | null;
-  setSelectedPlanet: React.Dispatch<React.SetStateAction<Planet | null>>
+  setSelectedPlanet: React.Dispatch<React.SetStateAction<Planet | null>>;
+  isMobile?: boolean;
 }
 
-const PlanetSelector: React.FC<PlanetSelectorProps> = ({planets, selectedPlanet, setSelectedPlanet}) => {
+const PlanetSelector: React.FC<PlanetSelectorProps> = ({planets, selectedPlanet, setSelectedPlanet, isMobile}) => {
   const [selectedStr, setSelectedStr] = useState("");
 
   return (
-    <Stack style={{ flex: 1, maxWidth: "33.33%" }}>
+    <Stack style={{ flex: 1, width: isMobile ? "100%" : "33%" }}>
       <Autocomplete
         label="Pick a Planet"
         radius={"md"}

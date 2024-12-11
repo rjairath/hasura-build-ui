@@ -8,8 +8,10 @@ import {
   Paper,
   Stack,
   Title,
-  Notification
+  Notification,
+  em
 } from "@mantine/core";
+import { useMediaQuery } from '@mantine/hooks';
 import { useQuery } from "@tanstack/react-query";
 import CharacterSelector from "./components/CharacterSelector";
 import { MissionSummary } from "./components/MissionSummary";
@@ -25,6 +27,7 @@ function App() {
     queryKey: ["data-pad-data"],
     queryFn: () => fetchDataForDatapad(),
   });
+  const isMobile = useMediaQuery(`(max-width: ${em(768)})`);
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
   const [selectedPlanet, setSelectedPlanet] = useState<Planet | null>(null);
   const [selectedShip, setSelectedShip] = useState<Starship | null>(null);
@@ -56,7 +59,16 @@ function App() {
           <Stack style={{ position: "relative" }}>
               {showNotification && (
                   <Notification
-                      style={{ position: "absolute", right: "0" }}
+                      style={{
+                          position: "fixed",
+                          right: "0",
+                          top: "16px",
+                          left: "50%",
+                          transform: "translateX(-50%)",
+                          width: isMobile ? "80%" : "40%",
+                          zIndex: "2",
+                          border: "0.0625rem solid #424242"
+                      }}
                       radius={"md"}
                       title="Mission Alert"
                       color="blue"
@@ -76,19 +88,25 @@ function App() {
                   <Group
                       justify="space-between"
                       align="flex-start"
-                      style={{ width: "100%", gap: "1rem" }}
+                      style={{
+                          width: "100%",
+                          gap: "1rem",
+                          flexDirection: isMobile ? "column" : "row",
+                      }}
                   >
                       {/* Memoized */}
                       <CharacterSelector
                           characters={allCharacters}
                           selectedCharacter={selectedCharacter}
                           setSelectedCharacter={setSelectedCharacter}
+                          isMobile={isMobile}
                       />
                       {/* Memoized */}
                       <PlanetSelector
                           planets={allPlanets}
                           selectedPlanet={selectedPlanet}
                           setSelectedPlanet={setSelectedPlanet}
+                          isMobile={isMobile}
                       />
                       {/* Memoized */}
                       <StarshipSelector
@@ -96,6 +114,7 @@ function App() {
                           allStarships={allStarships}
                           selectedShip={selectedShip}
                           setSelectedShip={setSelectedShip}
+                          isMobile={isMobile}
                       />
                   </Group>
                   <Button
